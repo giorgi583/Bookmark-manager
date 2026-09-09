@@ -1,4 +1,5 @@
 import AddBookmark from "./components/AddBookmark";
+import Header from "./components/Header";
 import Hero from "./components/Hero";
 import ListOfBookmarks from "./components/ListOfBookmarks";
 
@@ -9,11 +10,14 @@ export default async function Home() {
   const bookmarks = await Bookmark.find({}).sort({ createdAt: -1 }).lean();
 
   return (
+    <>
+    <Header />
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
     <Hero />
     <AddBookmark />
     <ListOfBookmarks bookmarks={JSON.parse(JSON.stringify(bookmarks))} />
 
     </main>
+    </>
   );
 }

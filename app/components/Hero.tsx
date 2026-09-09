@@ -18,7 +18,7 @@ const hero = () => {
         return () => clearInterval(interval);
     }, []);
   return (
-    <div>
+    <div className="flex justify-center items-center h-40 my-20">
         <h1 className="text-5xl font-bold flex justify-center items-start font-serif ">
           {displayText}
           <span className="blinking-cursor">|</span>

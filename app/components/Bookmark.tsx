@@ -1,10 +1,10 @@
-import { Check, CopyIcon, Star } from 'lucide-react';
+import { Check, CopyIcon, Link, Star } from 'lucide-react';
 import React, { useState, useTransition } from 'react'
 import {useRouter} from 'next/navigation';
 import { deleteBookmark, toggleFavorite } from '../actions';
-const Bookmark = ({ bookmark }: { bookmark: any}) => {
+const Bookmark = ({ bookmark, copiedId, setCopiedId }: { bookmark: any, copiedId: string | null, setCopiedId: (id: string | null) => void }) => {
       const [isPending, startTransition] = useTransition();
-      const [copiedId, setCopiedId] = useState<string | null>(null);
+      
       const [deletingId, setDeletingId] = useState<string | null>(null)
         const router = useRouter();
     const copyText = async (text: string) => {
@@ -29,21 +29,24 @@ const handleToggleFavorite = (id: string) => {
     await toggleFavorite(id);
   });
 };
+console.log('bookmark', bookmark)
+console.log(copiedId)
   return (
-    <li key={bookmark._id} className="p-4 bg-taupe-600/20 rounded-2xl flex justify-between items-center gap-4">
+    <li key={bookmark._id} className="p-4 bg-taupe-600/20 rounded-2xl grid grid-cols-[auto_1fr_auto] gap-5 items-center justify-between">
     <img src={bookmark.favicon} alt="" className="w-7 h-7" />
     <div className="flex flex-col gap-2 items-start">
-      <p>{bookmark.title} </p>
-      {/* <button className="px-2 py-1 flex items-center gap-2 bg-blue-700 cursor-pointer active:bg-blue-600 active:scale-95"><a href={bookmark.url} target="_blank" rel="noopener noreferrer" >Visit Link </a><Link size={16}/></button> */}
-   
+      <a href={bookmark.url} target="_blank" rel="noopener noreferrer" className="text-blue-200 hover:underline flex items-center gap-1 text-xl">
+        {bookmark.title}
+        <Link size={16} className="inline-block ml-1" />
+      </a>
     <div className="flex gap-2">
-      <button className="px-2 py-1 bg-blue-700 cursor-pointer active:bg-blue-600 active:scale-95" onClick={() => router.push(`/editBookmark/${bookmark._id}`)}>Edit</button>
-      <button className="px-2 py-1 bg-red-700 cursor-pointer active:bg-red-600 active:scale-95" onClick={() => handleDelete(bookmark._id)} disabled={isPending && deletingId === bookmark._id}>{isPending && deletingId === bookmark._id ? 'Deleting...' : 'Delete'}</button>
+      <button className="px-2 py-1 cursor-pointer border border-lime-400 rounded active:scale-95" onClick={() => router.push(`/editBookmark/${bookmark._id}`)}>Edit</button>
+      <button className="px-2 py-1 border border-red-400 rounded cursor-pointer active:scale-95" onClick={() => handleDelete(bookmark._id)} disabled={isPending && deletingId === bookmark._id}>{isPending && deletingId === bookmark._id ? 'Deleting...' : 'Delete'}</button>
       </div> 
       </div>
-      <div className='cursor-pointer p-2 rounded-2xl flex items-center gap-5' ><button className="cursor-pointer" onClick={() => handleToggleFavorite(bookmark._id)}>
-        <Star fill={bookmark.isFavorite ? 'orange' : 'none'} size={26}/>
-      </button> <button className='cursor-pointer p-2 rounded-2xl' onClick={() => { copyText(bookmark.url); setCopiedId(bookmark._id); }}>{copiedId === bookmark._id ? <Check size={26} className="text-green-500"/> : <CopyIcon size={26}/>}</button> </div>
+      <div className='cursor-pointer p-2 rounded-2xl flex items-center gap-5' ><button className="cursor-pointer group relative" onClick={() => handleToggleFavorite(bookmark._id)}>
+        <Star fill={bookmark.isFavorite ? 'orange' : 'none'} size={26}/> <span className="absolute top-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100"> {bookmark.isFavorite ? 'Remove from favorites' : 'Add to favorites'} </span>
+      </button> <button className='cursor-pointer p-2 rounded-2xl relative group' onClick={() => { copyText(bookmark.url); setCopiedId(bookmark._id); }}>{copiedId === bookmark._id ? <Check size={26} className="text-green-500"/> : <CopyIcon size={26}/>} <span className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-100">{copiedId === bookmark._id ? 'Copied!' : 'Copy URL'}</span> </button> </div>
     </li>
   )
 }
