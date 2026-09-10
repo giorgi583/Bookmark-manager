@@ -1,5 +1,5 @@
 import { Check, CopyIcon, Link, Star } from 'lucide-react';
-import React, { useState, useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import {useRouter} from 'next/navigation';
 import { deleteBookmark, toggleFavorite } from '../actions';
 const Bookmark = ({ bookmark, copiedId, setCopiedId }: { bookmark: any, copiedId: string | null, setCopiedId: (id: string | null) => void }) => {

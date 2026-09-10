@@ -5,7 +5,7 @@ import globe from '../public/globe.svg';
 import * as cheerio from "cheerio";
 import { revalidatePath } from "next/cache";
 
-export type FormState = { error?: string } | undefined;
+export type FormState = { error?: string; success?: boolean } | undefined;
 export async function addBookmark(prevState: FormState, formData: FormData): Promise<FormState> {
     const url = formData.get("url") as string;
     await dbConnect();
@@ -52,13 +52,18 @@ export async function deleteBookmark(id: string) {
   revalidatePath('/');
 }
 
-export async function editBookmark(id: string, formData: FormData) {
+export async function editBookmark(id: string, prevState: FormState, formData: FormData): Promise<FormState> {
   await dbConnect();
   const title = formData.get("title") as string;
+   if (!title.trim()) {
+    return { error: 'Title cannot be empty' }
+  }
   const tags = formData.get("tags")?.toString().split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) || [];
   await Bookmark.findByIdAndUpdate(id, { title, tags });
   revalidatePath('/');
+  return {success: true};
 }
+
 export async function toggleFavorite(id: string) {
  try { await dbConnect();
   const bookmark = await Bookmark.findById(id);

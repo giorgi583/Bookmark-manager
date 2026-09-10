@@ -1,16 +1,17 @@
 "use client";
 
 import { XIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useActionState} from 'react';
+import { addBookmark } from '../actions';
 
 interface FormProps {
   id: string;
   initialTitle: string;
   initialTags: string[];
-  action: (formData: FormData) => void; 
+  action: (prevState: any, formData: FormData) => Promise<any>;
 }
 export default function EditBookmarkForm({ id, initialTitle, initialTags, action }: FormProps) {
-
+const [state, formAction, isPending] = useActionState(action, undefined)
   const [tags, setTags] = useState<string[]>(initialTags);
 
   const removeTag = (indexToRemove: number) => {
@@ -18,7 +19,7 @@ export default function EditBookmarkForm({ id, initialTitle, initialTags, action
   };
 
   return (
-    <form action={action} method="POST" className="flex flex-col gap-4">
+    <form action={formAction} method="POST" className="flex flex-col gap-4">
       <label htmlFor="title" className="font-semibold">Title:</label>
       <input type="text" name="title" defaultValue={initialTitle} className="p-2 border rounded" />
       
@@ -49,8 +50,9 @@ export default function EditBookmarkForm({ id, initialTitle, initialTags, action
           </div>
         ))}
       </div>
-
-      <button type="submit" className="p-2 bg-blue-500 text-white rounded cursor-pointer">Save</button>
+      {state?.error && <p style={{ color: 'red' }}>{state.error}</p>}
+      {state?.success && <p style={{ color: 'green' }}>Bookmark updated successfully!</p>}
+      <button type="submit" className="p-2 bg-blue-500 text-white rounded cursor-pointer" disabled={isPending}>{isPending ? 'Saving...' : 'Save'}</button>
     </form>
   );
 }
