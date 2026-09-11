@@ -1,5 +1,6 @@
 import {SearchIcon} from "lucide-react"
 
+
 const Search = ({ searchQuery, setSearchQuery }: { searchQuery: string; setSearchQuery: (query: string) => void }) => {
   return (
     <div className="relative w-full">
@@ -11,6 +12,7 @@ const Search = ({ searchQuery, setSearchQuery }: { searchQuery: string; setSearc
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
+     
     </div>
   )
 }

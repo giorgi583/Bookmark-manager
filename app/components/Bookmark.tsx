@@ -1,7 +1,8 @@
-import { Check, CopyIcon, Link, Star } from 'lucide-react';
+import { Check, CopyIcon, Link, Loader, Star } from 'lucide-react';
 import { useState, useTransition } from 'react'
 import {useRouter} from 'next/navigation';
 import { deleteBookmark, toggleFavorite } from '../actions';
+import {toast} from 'sonner'
 const Bookmark = ({ bookmark, copiedId, setCopiedId }: { bookmark: any, copiedId: string | null, setCopiedId: (id: string | null) => void }) => {
       const [isPending, startTransition] = useTransition();
       
@@ -15,12 +16,26 @@ const Bookmark = ({ bookmark, copiedId, setCopiedId }: { bookmark: any, copiedId
         console.error("Failed to copy:", error);
       }
     };
-    const handleDelete = (id: string) => {
-    const confirmed = window.confirm("Are you sure you want to delete this bookmark?");
-    if (!confirmed) return;
-    setDeletingId(id);
-    startTransition(async () => {
-      await deleteBookmark(id);
+    const handleDelete = (id: string, title: string) => {
+    toast(`Are you sure you want to delete "${title}"?`, {
+      action: {
+        label: 'Delete',
+        onClick: () => {
+          startTransition(async () => {
+            setDeletingId(id);
+            await deleteBookmark(id);
+            setDeletingId(null);
+            toast.success(`Bookmark "${title}" deleted successfully!`);
+            router.refresh();
+          });
+        },
+      },
+      cancel: {
+        label: 'Cancel',
+        onClick: () => {
+          setDeletingId(null);
+        }
+      }
     });
   };
   
@@ -41,7 +56,7 @@ console.log(copiedId)
       </a>
     <div className="flex gap-2">
       <button className="px-2 py-1 cursor-pointer border border-lime-400 rounded active:scale-95" onClick={() => router.push(`/editBookmark/${bookmark._id}`)}>Edit</button>
-      <button className="px-2 py-1 border border-red-400 rounded cursor-pointer active:scale-95" onClick={() => handleDelete(bookmark._id)} disabled={isPending && deletingId === bookmark._id}>{isPending && deletingId === bookmark._id ? 'Deleting...' : 'Delete'}</button>
+      <button className="px-2 py-1 border border-red-400 rounded cursor-pointer active:scale-95" onClick={() => handleDelete(bookmark._id, bookmark.title)} disabled={isPending && deletingId === bookmark._id}>{isPending && deletingId === bookmark._id ? <Loader className="animate-spin" /> : 'Delete'}</button>
       </div> 
       </div>
       <div className='cursor-pointer p-2 rounded-2xl flex items-center gap-5' ><button className="cursor-pointer group relative" onClick={() => handleToggleFavorite(bookmark._id)}>

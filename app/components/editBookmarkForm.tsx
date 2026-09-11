@@ -1,8 +1,9 @@
 "use client";
 
-import { XIcon } from 'lucide-react';
-import { useState, useActionState} from 'react';
-import { addBookmark } from '../actions';
+import { Loader, XIcon } from 'lucide-react';
+import { useState, useActionState, useEffect} from 'react';
+import { toast } from 'sonner';
+
 
 interface FormProps {
   id: string;
@@ -13,13 +14,21 @@ interface FormProps {
 export default function EditBookmarkForm({ id, initialTitle, initialTags, action }: FormProps) {
 const [state, formAction, isPending] = useActionState(action, undefined)
   const [tags, setTags] = useState<string[]>(initialTags);
+useEffect(() => {
+    if (state?.success) {
+      toast.success(`Bookmark updated successfully!`);
+    }
+    if (state?.error) {
+      toast.error(state.error);
+    }
+  }, [state]);
 
   const removeTag = (indexToRemove: number) => {
     setTags(tags.filter((_, index) => index !== indexToRemove));
   };
 
   return (
-    <form action={formAction} method="POST" className="flex flex-col gap-4">
+    <form action={formAction} className="flex flex-col gap-7">
       <label htmlFor="title" className="font-semibold">Title:</label>
       <input type="text" name="title" defaultValue={initialTitle} className="p-2 border rounded" />
       
@@ -50,9 +59,7 @@ const [state, formAction, isPending] = useActionState(action, undefined)
           </div>
         ))}
       </div>
-      {state?.error && <p style={{ color: 'red' }}>{state.error}</p>}
-      {state?.success && <p style={{ color: 'green' }}>Bookmark updated successfully!</p>}
-      <button type="submit" className="p-2 bg-blue-500 text-white rounded cursor-pointer" disabled={isPending}>{isPending ? 'Saving...' : 'Save'}</button>
+      <button type="submit" className="p-2 bg-lime-500 text-white rounded cursor-pointer flex items-center justify-center gap-2" disabled={isPending}>Save{isPending ? <Loader className="animate-spin size-5" /> : ''}</button>
     </form>
   );
 }

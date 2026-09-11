@@ -43,13 +43,14 @@ export async function addBookmark(prevState: FormState, formData: FormData): Pro
     }
      await Bookmark.create({ url, title, favicon })
   revalidatePath('/')
-  return undefined;
+  return {success: true};
 }
 
 export async function deleteBookmark(id: string) {
   await dbConnect();
   await Bookmark.findByIdAndDelete(id);
   revalidatePath('/');
+  return {success: true};
 }
 
 export async function editBookmark(id: string, prevState: FormState, formData: FormData): Promise<FormState> {
