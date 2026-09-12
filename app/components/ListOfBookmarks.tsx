@@ -1,8 +1,9 @@
 "use client";
 import { useState } from 'react';
 import Search from "./Search";
-import { BookmarkIcon} from 'lucide-react'
+import { BookmarkIcon, BookmarkOff, Download} from 'lucide-react'
 import Bookmark from "./Bookmark";
+import { deleteAllBookmarks } from '../actions';
 const ListOfBookmarks = ({ bookmarks }: { bookmarks: any[] }) => {
 const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showedBookmarks, setShowedBookmarks] = useState<string>('All');
@@ -11,11 +12,15 @@ const [searchQuery, setSearchQuery] = useState<string>('');
   const favorites = bookmarks.filter((b: any) => b.isFavorite);
   
   return (
-    <div className="flex flex-col gap-4 border-2 border-gray-300 p-4 rounded-xl min-w-200 relative">
+    <div className="flex flex-col gap-4 border-2 border-gray-300 p-4 rounded-xl min-w-100 max-w-160 relative">
       <BookmarkIcon size={46} className="absolute -top-2 right-5" fill='white'  />
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 items-center my-3">
         <h2 onClick={() => setShowedBookmarks('All')} className={`${showedBookmarks === 'All' ? 'bg-taupe-600/20  border-b-2 border-b-2-gray-300' : ''} p-2 rounded cursor-pointer`}>All Bookmarks</h2>
         <h2 onClick={() => setShowedBookmarks('Favourites')} className={`${showedBookmarks === 'Favourites' ? 'bg-taupe-600/20 border-b-2 border-gray-300' : ''} p-2 rounded cursor-pointer`}>Favourites</h2>
+      <a download="bookmarks.json" href="/api/export" className="p-2 border border-gray-300 rounded cursor-pointer flex items-center gap-2 hover:bg-gray-700/20 active:scale-98 transition-transform duration-100">
+        Download Bookmarks <Download size={20} className="inline-block ml-1" />
+      </a>
+      <button className="p-2 border border-gray-300 rounded cursor-pointer hover:bg-gray-700/20 active:scale-98 transition-transform duration-100" onClick={deleteAllBookmarks}>Clear All</button>
       </div>
       <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <ul className="flex flex-col gap-4">
@@ -28,7 +33,7 @@ const [searchQuery, setSearchQuery] = useState<string>('');
       else return null;
     }
     return <Bookmark key={bookmark._id} bookmark={bookmark} copiedId={copiedId} setCopiedId={setCopiedId} />}) 
-  : <p className="p-4 bg-taupe-600/20 rounded-2xl flex justify-between items-center gap-4 text-2xl py-20">No bookmarks found!</p> 
+  : <p className="p-4 bg-taupe-600/20 rounded-2xl flex justify-center items-center gap-4 text-2xl py-20">No Favourites found! <BookmarkOff size={40} /></p> 
   : bookmarks.length > 0 ? bookmarks.filter((bookmark: any) => {return bookmark.title.toLowerCase().includes(searchQuery.toLowerCase().trim()) || bookmark.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase().trim()))}).map((bookmark: any) => 
  {
   if(bookmarks.length > 5 && !showMore && !searchQuery) {
@@ -38,8 +43,8 @@ const [searchQuery, setSearchQuery] = useState<string>('');
       else return null;
     }
   return <Bookmark key={bookmark._id} bookmark={bookmark} copiedId={copiedId} setCopiedId={setCopiedId} />}) 
-  : <div className="p-4 bg-taupe-600/20 rounded-2xl flex justify-between items-center gap-4 py-20 text-2xl">
-     No bookmarks to display!</div> }
+  : <div className="p-4 bg-taupe-600/20 rounded-2xl flex justify-center items-center gap-4 py-20 text-2xl">
+     No bookmarks to display! <BookmarkOff size={40} /></div> }
       </ul>
       { (bookmarks.length > 5 || favorites.length > 5) && <button className="p-2 border border-gray-300 rounded cursor-pointer" onClick={() => setShowMore(!showMore)}>{showMore ? 'Show Less' : 'Show More'}</button> }
  </div>

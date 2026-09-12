@@ -8,10 +8,11 @@ import { toast } from 'sonner';
 interface FormProps {
   id: string;
   initialTitle: string;
+  initialUrl: string;
   initialTags: string[];
   action: (prevState: any, formData: FormData) => Promise<any>;
 }
-export default function EditBookmarkForm({ id, initialTitle, initialTags, action }: FormProps) {
+export default function EditBookmarkForm({ id, initialTitle, initialUrl, initialTags, action }: FormProps) {
 const [state, formAction, isPending] = useActionState(action, undefined)
   const [tags, setTags] = useState<string[]>(initialTags);
 useEffect(() => {
@@ -31,7 +32,8 @@ useEffect(() => {
     <form action={formAction} className="flex flex-col gap-7">
       <label htmlFor="title" className="font-semibold">Title:</label>
       <input type="text" name="title" defaultValue={initialTitle} className="p-2 border rounded" />
-      
+      <label htmlFor="url" className="font-semibold">Thumbnail:</label>
+      <input type="text" name="url" defaultValue={initialUrl} placeholder="Paste an image address..." className="p-2 border rounded" />
       <label htmlFor="tags" className="font-semibold">Tags:</label>
 
       <input type="hidden" name="tags" value={tags.join(', ')} />
@@ -59,7 +61,7 @@ useEffect(() => {
           </div>
         ))}
       </div>
-      <button type="submit" className="p-2 bg-lime-500 text-white rounded cursor-pointer flex items-center justify-center gap-2" disabled={isPending}>Save{isPending ? <Loader className="animate-spin size-5" /> : ''}</button>
+      <button type="submit" className="p-2 bg-lime-500 text-white font-bold rounded cursor-pointer flex items-center justify-center gap-2" disabled={isPending}>Save{isPending ? <Loader className="animate-spin size-5" /> : ''}</button>
     </form>
   );
 }

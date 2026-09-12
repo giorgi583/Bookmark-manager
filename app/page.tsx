@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <>
     <Header />
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between p-20">
     <Hero />
     <AddBookmark />
     <ListOfBookmarks bookmarks={JSON.parse(JSON.stringify(bookmarks))} />

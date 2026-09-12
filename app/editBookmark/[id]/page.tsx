@@ -20,7 +20,7 @@ const EditBookmarkPage = async ({ params }: { params: Promise<{ id: string }> })
       </a>
       <p className="text-gray-400">Edit the title and tags of your bookmark below.</p>
       <hr className="my-4 border-gray-600" />
-      <EditBookmarkForm id={id} initialTitle={bookmark.title} initialTags={bookmark.tags} action={editBookmarkWithid} />
+      <EditBookmarkForm id={id} initialTitle={bookmark.title} initialUrl={bookmark.ogImage} initialTags={bookmark.tags} action={editBookmarkWithid} />
     </div>
   )
 }
