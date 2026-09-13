@@ -13,7 +13,7 @@ const EditBookmarkPage = async ({ params }: { params: Promise<{ id: string }> })
     return <div>Bookmark not found</div>;
   }
   return (
-    <div className="p-4 py-20 rounded-2xl min-w-200 max-w-200 mx-auto">
+    <div className="p-4 py-20 rounded-2xl min-w-190 max-w-200 mx-auto max-md:min-w-150 max-sm:min-w-screen">
       <h1 className="text-3xl font-bold mb-5">Edit Bookmark</h1>
       <a href="/" className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-full max-w-30 my-5 cursor-pointer">
         <ArrowLeft size={20} /> Back

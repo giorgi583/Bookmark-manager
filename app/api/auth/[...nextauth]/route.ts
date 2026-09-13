@@ -22,13 +22,28 @@ export const authOptions = {
                 return {
                     id: user._id.toString(),
                     email: user.email,
+                    username: user.name
                 }
             }
         })
     ],
     session: {
         strategy: "jwt" as const
-    }
+    },
+    callbacks: {
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.id = user.id
+        token.username = user.username
+      }
+      return token
+    },
+    async session({ session, token }: any) {
+      session.user.id = token.id
+      session.user.username = token.username
+      return session
+    },
+  },
 }
 
 const handler = NextAuth(authOptions)

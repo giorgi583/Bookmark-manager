@@ -1,6 +1,7 @@
 import mongoose, { Schema} from "mongoose";
 
 const bookmarkSchema = new Schema({
+    userId: {type: String, required: true},
     url: {type: String, required: true},
     title: {type: String, required: true},
     favicon: {type: String},

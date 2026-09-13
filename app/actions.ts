@@ -6,14 +6,19 @@ import globe from '../public/globe.svg';
 import * as cheerio from "cheerio";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
-import { redirect } from "next/dist/server/api-utils";
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 
 export type FormState = { error?: string; success?: boolean } | undefined;
 export async function addBookmark(prevState: FormState, formData: FormData): Promise<FormState> {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) {
+    return { error: "You must be logged in to add a bookmark" }
+  }
     const url = formData.get("url") as string;
     await dbConnect();
     let title = url;
-    const existingBookmark = await Bookmark.findOne({ url });
+    const existingBookmark = await Bookmark.findOne({ userId: session.user.id, url });
     if (existingBookmark) {
        return { error: 'This bookmark already exists' };
     }
@@ -51,19 +56,41 @@ export async function addBookmark(prevState: FormState, formData: FormData): Pro
        console.error('Metadata fetch failed for', url, error);
        return { error: 'Could not save that bookmark. Try again.' }
     }
-     await Bookmark.create({ url, title, favicon, ogImage });
+     await Bookmark.create({ url, title, favicon, ogImage, userId: session.user.id });
   revalidatePath('/')
   return {success: true};
 }
 
 export async function deleteBookmark(id: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) {
+    return { error: "You must be logged in to delete a bookmark" }
+  }
   await dbConnect();
+  const bookmark = await Bookmark.findById(id);
+  if (!bookmark) {
+    return { error: "Bookmark not found" }
+  }
+  if (bookmark.userId !== session.user.id) {
+    return {error: "You don't have permission to delete this bookmark"}
+  }
   await Bookmark.findByIdAndDelete(id);
   revalidatePath('/');
   return {success: true};
 }
 
 export async function editBookmark(id: string, prevState: FormState, formData: FormData): Promise<FormState> {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) {
+    return { error: "You must be logged in to edit a bookmark" }
+  }
+  const bookmark = await Bookmark.findById(id);
+  if (!bookmark) {
+    return { error: "Bookmark not found" }
+  }
+  if (bookmark.userId !== session.user.id) {
+    return {error: "You don't have permission to edit this bookmark"}
+  }
   await dbConnect();
   const title = formData.get("title") as string;
    if (!title.trim()) {
@@ -77,8 +104,15 @@ export async function editBookmark(id: string, prevState: FormState, formData: F
 }
 
 export async function toggleFavorite(id: string) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) {
+    return { error: "You must be logged in to edit a bookmark" }
+  }
  try { await dbConnect();
   const bookmark = await Bookmark.findById(id);
+  if(session.user.id !== bookmark.userId) {
+    return {error: "You don't have permission to edit this bookmark"}
+  }
   if (bookmark) {
     bookmark.isFavorite = !bookmark.isFavorite;
     await bookmark.save();
@@ -90,8 +124,12 @@ export async function toggleFavorite(id: string) {
 }
 
 export async function deleteAllBookmarks() {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) {
+    return { error: "You must be logged in to delete all bookmarks" }
+  }
   await dbConnect();
-  await Bookmark.deleteMany({});
+  await Bookmark.deleteMany({userId: session.user.id});
   revalidatePath('/');
   return {success: true};
 }

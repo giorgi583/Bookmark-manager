@@ -12,15 +12,19 @@ const [searchQuery, setSearchQuery] = useState<string>('');
   const favorites = bookmarks.filter((b: any) => b.isFavorite);
   
   return (
-    <div className="flex flex-col gap-4 border-2 border-gray-300 p-4 rounded-xl min-w-100 max-w-160 relative">
-      <BookmarkIcon size={46} className="absolute -top-2 right-5" fill='white'  />
-      <div className="flex gap-4 items-center my-3">
-        <h2 onClick={() => setShowedBookmarks('All')} className={`${showedBookmarks === 'All' ? 'bg-taupe-600/20  border-b-2 border-b-2-gray-300' : ''} p-2 rounded cursor-pointer`}>All Bookmarks</h2>
-        <h2 onClick={() => setShowedBookmarks('Favourites')} className={`${showedBookmarks === 'Favourites' ? 'bg-taupe-600/20 border-b-2 border-gray-300' : ''} p-2 rounded cursor-pointer`}>Favourites</h2>
-      <a download="bookmarks.json" href="/api/export" className="p-2 border border-gray-300 rounded cursor-pointer flex items-center gap-2 hover:bg-gray-700/20 active:scale-98 transition-transform duration-100">
-        Download Bookmarks <Download size={20} className="inline-block ml-1" />
-      </a>
-      <button className="p-2 border border-gray-300 rounded cursor-pointer hover:bg-gray-700/20 active:scale-98 transition-transform duration-100" onClick={deleteAllBookmarks}>Clear All</button>
+    <div className="flex flex-col gap-4 border-2 border-lime-500 p-4 bg-gray-800 rounded-xl min-w-100 max-w-160 max-sm:min-w-50 relative">
+      <BookmarkIcon size={46} className="absolute -top-2 right-5 text-white" fill='#84CC16'  />
+      <div className="flex gap-4 items-center my-3 max-md:gap-2 max-sm:flex-col max-sm:items-start">
+        <div className="flex gap-2">
+          <h2 onClick={() => setShowedBookmarks('All')} className={`${showedBookmarks === 'All' ? 'bg-taupe-600/20  border-b-2 border-b-2-gray-300' : ''} p-2 rounded cursor-pointer`}>All Bookmarks</h2>
+          <h2 onClick={() => setShowedBookmarks('Favourites')} className={`${showedBookmarks === 'Favourites' ? 'bg-taupe-600/20 border-b-2 border-gray-300' : ''} p-2 rounded cursor-pointer`}>Favourites</h2>
+        </div>
+      <div className="flex gap-2">
+        <a download="bookmarks.json" href="/api/export" className="p-2 border border-lime-500 rounded cursor-pointer flex items-center gap-2 hover:bg-gray-700/20 active:scale-98 transition-transform duration-100">
+          Download Bookmarks <Download size={20} className="inline-block ml-1" />
+        </a>
+        <button className="p-2 border border-gray-300 rounded cursor-pointer bg-lime-500 font-semibold flex items-center gap-2 hover:bg-lime-600 active:scale-98 transition-transform duration-100" onClick={deleteAllBookmarks}>Clear All</button>
+      </div>
       </div>
       <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <ul className="flex flex-col gap-4">

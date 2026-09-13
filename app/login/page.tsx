@@ -8,7 +8,7 @@ const LoginPage = () => {
   const handleSubmit = async (formData: FormData) => {
     const result = await signIn('credentials', { email: formData.get('email'), password: formData.get('password'), redirect: false });
     if (result?.error) {
-      setError(result.error);
+      setError("Invalid email or password.");
     }
     else {
       setError(null);
