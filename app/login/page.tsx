@@ -25,9 +25,9 @@ const LoginPage = () => {
       <h1 className="text-3xl font-bold mb-5">Login</h1>
       <form action={handleSubmit} className="flex flex-col gap-4 w-full">
         <label htmlFor="email" className="font-semibold">Email:</label>
-        <input type="email" name="email" placeholder="Enter your email" className="p-2 border rounded" />
+        <input type="email" name="email" id="email" required placeholder="Enter your email" className="p-2 border rounded" />
         <label htmlFor="password" className="font-semibold">Password:</label>
-        <input type="password" name="password" placeholder="Enter your password" className="p-2 border rounded" />
+        <input type="password" name="password" id="password" required placeholder="Enter your password" className="p-2 border rounded" />
         <a href="/register" className="text-sm text-lime-500 hover:underline">Don't have an account? Register here</a>
         <button type="submit" className="px-4 py-2 bg-lime-500 text-white rounded hover:bg-lime-600 cursor-pointer">Login</button>
         {error && <p className="text-red-500">{error}</p>}

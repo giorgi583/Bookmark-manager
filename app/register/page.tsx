@@ -32,15 +32,15 @@ const RegisterPage = () => {
       <h1 className="text-3xl font-bold mb-5">Register</h1>
       <form action={formAction} className="flex flex-col gap-4 w-full">
         <label htmlFor="username" className="font-semibold">Username:</label>
-        <input required type="text" name="username" placeholder="Enter your username" className="p-2 border rounded" />
+        <input required type="text" id="username" name="username" placeholder="Enter your username" className="p-2 border rounded" />
         <label htmlFor="email" className="font-semibold">Email:</label>
-        <input required type="email" name="email" placeholder="Enter your email" className="p-2 border rounded" />
+        <input required type="email" id="email" name="email" placeholder="Enter your email" className="p-2 border rounded" />
         <label htmlFor="password" className="font-semibold">Password:</label>
-        <div className="relative w-full"><input required type={showPassword ? "text" : "password"} value={password} onChange={(e)=> setPassword(e.target.value)} name="password" placeholder="Enter your password" className="p-2 border rounded w-full" />
+        <div className="relative w-full"><input required type={showPassword ? "text" : "password"} id="password" value={password} onChange={(e)=> setPassword(e.target.value)} name="password" placeholder="Enter your password" className="p-2 border rounded w-full" />
         <button className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={togglePasswordVisibility}><Eye /></button>
         </div>
         <label htmlFor="confirmPassword" className="font-semibold">Confirm Password:</label>
-        <div className="relative w-full"><input required type={showPassword ? "text" : "password"} name="confirmPassword" placeholder="Confirm your password" className="p-2 border rounded w-full" />
+        <div className="relative w-full"><input required id="confirmPassword" type={showPassword ? "text" : "password"} name="confirmPassword" placeholder="Confirm your password" className="p-2 border rounded w-full" />
         <button className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer" onClick={togglePasswordVisibility}><Eye /></button>
         </div>
          {password && <ul className="flex flex-col gap-2 bg-gray-600/20 p-2 rounded">

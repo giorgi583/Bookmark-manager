@@ -31,16 +31,17 @@ useEffect(() => {
   return (
     <form action={formAction} className="flex flex-col gap-7">
       <label htmlFor="title" className="font-semibold">Title:</label>
-      <input type="text" name="title" defaultValue={initialTitle} className="p-2 border rounded" />
+      <input type="text" placeholder="Add a title..." id="title" name="title" defaultValue={initialTitle} className="p-2 border rounded" />
       <label htmlFor="url" className="font-semibold">Thumbnail:</label>
-      <input type="text" name="url" defaultValue={initialUrl} placeholder="Paste an image address..." className="p-2 border rounded" />
+      <input type="text" id="url" name="url" defaultValue={initialUrl} placeholder="Paste an image address..." className="p-2 border rounded" />
       <label htmlFor="tags" className="font-semibold">Tags:</label>
 
-      <input type="hidden" name="tags" value={tags.join(', ')} />
+      <input type="hidden" id="tags" name="tags" value={tags.join(', ')} />
       <input 
         type="text" 
         placeholder="Add tags..." 
         className="p-2 border rounded"
+        id="tag"
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             e.preventDefault();

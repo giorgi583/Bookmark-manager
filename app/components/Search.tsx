@@ -7,6 +7,7 @@ const Search = ({ searchQuery, setSearchQuery }: { searchQuery: string; setSearc
       <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
       <input
         type="text"
+        id="search"
         placeholder="Search bookmarks by title or tags..."
         className="border border-lime-500 p-2 rounded-xl w-full pl-10"
         value={searchQuery}
