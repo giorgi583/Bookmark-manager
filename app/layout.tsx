@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Bookmark Manager",
-  description: "Manage your bookmarks with ease",
+  description: "A simple bookmark manager where you can save links, get automatic title/favicon/preview-image fetching, organize with tags, search, favorite, and keep your bookmarks private behind authentication.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -28,7 +28,7 @@ const RegisterPage = () => {
       <a href="/" className="flex items-center gap-2 px-4 py-2 mx-5 bg-gray-700 text-white rounded-full max-w-30 fixed top-5 cursor-pointer">
       <ArrowBigLeft size={20} /> Back
       </a>
-      <div className="flex flex-col items-center justify-center gap-4  p-4 border-2 border-gray-300 rounded-xl min-w-100 max-w-150 mx-auto my-auto">
+      <div className="flex flex-col items-center justify-center gap-4  p-4 border-2 shadow-lime-300 shadow-md border-lime-500 bg-gray-800 rounded-xl min-w-100 max-w-150 mx-auto my-auto max-sm:min-w-60 max-sm:mt-25">
       <h1 className="text-3xl font-bold mb-5">Register</h1>
       <form action={formAction} className="flex flex-col gap-4 w-full">
         <label htmlFor="username" className="font-semibold">Username:</label>

@@ -20,7 +20,7 @@ const { data: session } = useSession();
     <div className="p-5 mb-10 flex items-center flex-col gap-4 border border-lime-500 rounded bg-gray-800 max-sm:p-3 max-[400px]:!p-1">
       <form className="p-5 flex items-center gap-4 max-sm:p-3 max-sm:gap-2 max-[400px]:!p-1" action={formAction}>
         <label htmlFor="url" className="sr-only">Add Bookmark</label>
-          <input className="p-2 border border-lime-500 rounded bg-black" name="url" type="url" placeholder="Paste a URL" required />
+          <input className="p-2 border border-lime-500 rounded" name="url" type="url" placeholder="Paste a URL" required />
           <button className="p-2 rounded bg-lime-500 cursor-pointer w-15 h-10.5 flex items-center justify-center max-sm:p-1 max-sm:w-10 max-sm:text-sm" type="submit" disabled={isPending}>
             {isPending ? <Loader className="animate-spin size-4" /> : 'Save'}
           </button>
