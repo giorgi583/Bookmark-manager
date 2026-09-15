@@ -49,7 +49,7 @@ console.log(copiedId)
   return (
     <li key={bookmark._id} className="p-4 bg-taupe-600/20 rounded-2xl grid grid-cols-[auto_1fr_auto] gap-5 items-center z-10 justify-between relative group/outer max-sm:gap-3 max-sm:p-2">
     <img src={bookmark.favicon} alt="favicon" className="w-7 h-7" />
-    <div className='absolute inset-0 z-20 rounded-2xl opacity-100 group-hover/outer:opacity-0 group-hover/outer:-z-10 transition-opacity duration-500' style={{backgroundImage: bookmark.ogImage ? `url(${bookmark.ogImage})` : '', backgroundSize: '100% 100%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}></div>
+    <div className='absolute inset-0 z-20 rounded-2xl opacity-100 group-hover/outer:opacity-0 group-active/outer:opacity-0 group-hover/outer:-z-10 group-active/outer:-z-10 transition-opacity duration-500' style={{backgroundImage: bookmark.ogImage ? `url(${bookmark.ogImage})` : '', backgroundSize: '100% 100%', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}></div>
     <div className="flex flex-col gap-2 items-start justify-center min-h-25">
       <a href={bookmark.url} target="_blank" rel="noopener noreferrer" className="text-blue-200 hover:underline flex items-center gap-1 text-xl max-sm:text-base">
         {bookmark.title}
