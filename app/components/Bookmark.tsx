@@ -53,7 +53,7 @@ console.log(copiedId)
   onClick={() => setIsRevealed(true)}
   className={`absolute inset-0 z-20 rounded-2xl transition-opacity duration-500
     ${isRevealed ? 'opacity-0 -z-10' : 'opacity-100'}
-    group-hover/outer:opacity-0
+    group-hover/outer:opacity-0 group-hover/outer:-z-10
   `}
   style={{
     backgroundImage: bookmark.ogImage
